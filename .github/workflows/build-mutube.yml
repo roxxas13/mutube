@@ -17,9 +17,11 @@ jobs:
           echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
       - name: Download decrypted YouTube IPA
-        run: |
-          curl -L "${{ secrets.YOUTUBE_IPA_URL }}" -o youtube.ipa
-          ls -lh youtube.ipa
+  run: |
+    mkdir -p ipa
+    curl -L "${{ secrets.YOUTUBE_IPA_URL }}" \
+      -o ipa/YouTube_4.54.01_decrypted.ipa
+    ls -lh ipa/YouTube_4.54.01_decrypted.ipa
 
       - name: Build μTube
         run: make
