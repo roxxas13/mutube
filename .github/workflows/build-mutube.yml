@@ -1,0 +1,31 @@
+name: Build μTube
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Download decrypted YouTube IPA
+        run: |
+          curl -L "${{ secrets.YOUTUBE_IPA_URL }}" -o youtube.ipa
+          ls -lh youtube.ipa
+
+      - name: Build μTube
+        run: make
+
+      - name: Upload μTube IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutube
+          path: mutube.ipa
